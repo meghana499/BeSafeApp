@@ -1,15 +1,25 @@
 import 'package:besafe_app/analysis.dart';
+import 'package:besafe_app/services/auth.dart';
 //import 'package:besafe_app/review.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 //import './rating.dart';
+import './login.dart';
+import 'screens/wrapper.dart';
+import 'screens/authenticate/sign_in.dart';
 
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget{
   @override
   Widget build(BuildContext context){
-    return MaterialApp(
-  home: new Homescreen());
+    return StreamProvider.value(
+      value:AuthService().user,
+      child: MaterialApp(
+        home: Wrapper()
+        ));
+
+  
 
   }
 }

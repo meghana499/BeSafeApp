@@ -1,15 +1,22 @@
-import 'package:flutter/cupertino.dart';
+import 'package:besafe_app/services/auth.dart';
 import 'package:flutter/material.dart';
-import './main.dart';
+import 'package:besafe_app/main.dart';
 
-class Login extends StatelessWidget {
+class SignIn extends StatefulWidget {
+  @override
+  _SignInState createState() => _SignInState();
+}
+
+class _SignInState extends State<SignIn> {
+
+  final AuthService _auth=AuthService();
+
   @override
   Widget build(BuildContext context) {
-    final deviceSize=MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
-        height: deviceSize.height,
-        width: deviceSize.width,
+        // height: deviceSize.height,
+        // width: deviceSize.width,
           decoration: BoxDecoration(
               gradient: LinearGradient(begin: Alignment.topCenter, colors: [
             Colors.purple[400],
@@ -25,6 +32,7 @@ class Login extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.all(20),
+                
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -36,14 +44,28 @@ class Login extends StatelessWidget {
                       height: 10,
                     ),
                     Text(
-                      "Welcome Back",
+                      "Welcome",
                       style: TextStyle(color: Colors.white, fontSize: 18),
-                    )
+                    ),
+                    RaisedButton(child: Text("Skip Login"),
+                    onPressed: () async{
+                      dynamic result =await _auth.signInAnon();
+                          if(result==null){
+                            print("error signing in");
+                          }
+                          else{
+                            print("signed in");
+                            print(result.uid);
+                          }
+
+                      },)
                   ],
+                  
                 ),
               ),
               Expanded(
                 child: Container(
+                  
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -51,7 +73,9 @@ class Login extends StatelessWidget {
                         topRight: Radius.circular(60)),
                   ),
                   child: Padding(
+                    
                     padding: EdgeInsets.all(20),
+                    
                     child: Column(children: <Widget>[
                       SizedBox(
                         height: 60,
@@ -67,6 +91,7 @@ class Login extends StatelessWidget {
                         child: Column(children: <Widget>[
                           Container(
                             padding: EdgeInsets.all(20),
+                            
                             decoration: BoxDecoration(
                                 border: Border(
                                     bottom:
@@ -93,7 +118,8 @@ class Login extends StatelessWidget {
                                   border: InputBorder.none),
                             ),
                           )
-                        ]),
+                        ]
+                  ),
                       ),
                       SizedBox(height: 40,),
                       Text("Forget Password?",style:TextStyle(color: Colors.grey),),
@@ -112,11 +138,24 @@ class Login extends StatelessWidget {
                         child: RaisedButton(
                           child: Text("Login",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.bold),
                         ),
-                          
-                          onPressed: ()
-                           {
-                             Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>Homescreen()),);},
+                        
+
+                        onPressed: () async {
+                          dynamic result =await _auth.signInAnon();
+                          if(result==null){
+                            print("error signing in");
+                          }
+                          else{
+                            print("signed in");
+                            print(result);
+                          }
+
+                        },
                         ),
+                        //   onPressed: ()
+                        //    {
+                        //      Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>Homescreen()),);},
+                        // ),
                         
                         ),
                         ),
@@ -149,15 +188,19 @@ class Login extends StatelessWidget {
                               child: Center(
                                 child: Text("Github",style: TextStyle(color:Colors.white),),
                               ),
+
                             ),
                           ),
                         ]
                       )
-                    ]),
+                    ]
+                    )
+                    
                   ),
                 ),
               )
             ],
+            
           )),
     );
   }
